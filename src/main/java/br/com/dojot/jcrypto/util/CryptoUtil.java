@@ -471,22 +471,6 @@ public final class CryptoUtil {
 		return !result;
 	}
 	
-	public static void inc(byte[] a) 
-	{
-		int size = a.length;
-		int previous, calculated;
-		
-		for(int i = size - 1; i >= 0; i--) 
-		{
-			previous = a[i] & 0xff;
-			calculated = previous + 1;
-			a[i] = (byte) calculated;
-			if(calculated != 256) {
-				break;
-			}
-		}
-	}
-	
 	/* Calculates the number of bytes which will be copied to the buffer */
 	public static int calculateRemainingBytes(int inputLen, int inputOffset, int bufferOffset, int blockLength) {
 		int remainingBytes;
