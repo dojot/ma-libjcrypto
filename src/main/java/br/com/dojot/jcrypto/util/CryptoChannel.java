@@ -38,7 +38,7 @@ public class CryptoChannel {
 		
 		this.ivExternal = ivExternal.clone();
 		this.ivLocal = ivLocal.clone();
-		
+
 		initChannel(readChannel, Cipher.DECRYPT_MODE, this.keyExternal, this.ivExternal);
 		initChannel(writeChannel, Cipher.ENCRYPT_MODE, this.keyLocal, this.ivLocal);
 	}	
@@ -56,7 +56,7 @@ public class CryptoChannel {
 		} else {
 			ciphertext = writeChannel.doFinal();
 		}
-		inc(ivLocal);
+
 		initChannel(writeChannel, Cipher.ENCRYPT_MODE, keyLocal, ivLocal);
 		return ciphertext;
 	}
@@ -75,7 +75,6 @@ public class CryptoChannel {
 			plaintext = readChannel.doFinal();
 		}
 		
-		inc(ivExternal);
 		initChannel(readChannel, Cipher.DECRYPT_MODE, keyExternal, ivExternal);
 		return plaintext;
 	}
@@ -86,21 +85,6 @@ public class CryptoChannel {
 		channel.init(opmode, key, gcmParam);
 	}
 	
-	private void inc(byte[] iv) 
-	{
-		int size = iv.length;
-		int previous, calculated;
-		
-		for(int i = size - 1; i >= 0; i--) 
-		{
-			previous = iv[i] & 0xff;
-			calculated = previous + 1;
-			iv[i] = (byte) calculated;
-			if(calculated != 256) {
-				break;
-			}
-		}
-	}
 	
 	public byte[] getExternalIV() {
 		return ivExternal;
